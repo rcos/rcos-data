@@ -1147,7 +1147,9 @@ CREATE TABLE public.users (
     role public.user_role NOT NULL,
     timezone text DEFAULT 'America/New_York'::text NOT NULL,
     created_at timestamp with time zone DEFAULT now() NOT NULL,
-    name character varying NOT NULL
+    preferred_name character varying,
+    full_name character varying NOT NULL,
+    display_name character varying GENERATED ALWAYS AS (COALESCE(preferred_name, full_name)) STORED
 );
 
 
@@ -1181,10 +1183,10 @@ COMMENT ON COLUMN public.users.timezone IS 'Timezone from TZ list';
 
 
 --
--- Name: COLUMN users.name; Type: COMMENT; Schema: public; Owner: -
+-- Name: COLUMN users.full_name; Type: COMMENT; Schema: public; Owner: -
 --
 
-COMMENT ON COLUMN public.users.name IS 'Name of user, may or may not be full name.';
+COMMENT ON COLUMN public.users.full_name IS 'Name of user, may or may not be full name.';
 
 
 --
